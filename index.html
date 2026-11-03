@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style><title>8D English Practice</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style><title>PEV English Practice</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -138,7 +138,7 @@ footer button { background: none; border: none; text-decoration: underline; colo
 
 </head><body><header class="top"><div class="wrap">
   <img src="logo.png" alt="Özel PEV Okulları">
-  <div class="brand">8D English Practice<small>Özel PEV Okulları · Teacher: Mustafa Tükenmez</small></div>
+  <div class="brand"><span id="bn">English Practice</span><small id="bs">Özel PEV Okulları · 8th grade</small></div>
   <div class="sp"></div>
   <span id="who"></span>
 </div></header>
@@ -179,6 +179,9 @@ fetch('data.json').then(r => r.json()).then(j => { D = j; route(); }).catch(() =
 if (location.hash === '#teacher') teacher();
 
 function setWho() {
+  const g = code && D && D.groups ? D.groupInfo[D.groups[code]] : null;
+  document.getElementById('bn').textContent = g ? g.short + ' English Practice' : 'English Practice';
+  document.getElementById('bs').textContent = g ? 'Özel PEV Okulları · Teacher: ' + g.teacher : 'Özel PEV Okulları · 8th grade';
   who.innerHTML = code ? `<button class="btn small" id="out" type="button">Code ${esc(code)} · change</button>` : '';
   if (code) document.getElementById('out').onclick = () => { store.set('code', null); code = null; setWho(); home(); };
 }
@@ -200,7 +203,7 @@ function home() {
       <div class="sheet"><b>2 · Now It's Your Turn</b><p class="muted" style="margin:4px 0 0">Do the word activities and press <i>Check</i>.</p></div>
       <div class="sheet"><b>3 · Send your result</b><p class="muted" style="margin:4px 0 0">At the end you get a result code. Send it to your teacher.</p></div>
     </div>
-    <footer><span>Sınıf: 8D KUR İNGİLİZCE</span><button type="button" onclick="location.hash='teacher'">Öğretmen sayfası</button></footer>`;
+    <footer><span>8. sınıflar · KUR İngilizce</span><button type="button" onclick="location.hash='teacher'">Öğretmen sayfası</button></footer>`;
   const ci = document.getElementById('ci');
   ci.addEventListener('input', () => ci.value = ci.value.toUpperCase().replace(/[^A-Z0-9]/g, ''));
   document.getElementById('cf').addEventListener('submit', e => {
