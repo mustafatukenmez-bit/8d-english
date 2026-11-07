@@ -146,13 +146,13 @@ footer button { background: none; border: none; text-decoration: underline; colo
 
 <script>
 (function () {
-const SALT = 'pev8d-2026';
+const SALT = 'pev5d-2026';
 const app = document.getElementById('app'), who = document.getElementById('who');
 let D = null, code = null;
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const store = {
-  get(k, d) { try { const v = localStorage.getItem('pev8d:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem('pev8d:' + k, JSON.stringify(v)); } catch (e) {} }
+  get(k, d) { try { const v = localStorage.getItem('pev5d:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('pev5d:' + k, JSON.stringify(v)); } catch (e) {} }
 };
 function chk(s) { let x = 2166136261; for (const ch of s + SALT) { x ^= ch.charCodeAt(0); x = Math.imul(x, 16777619) >>> 0; } return (x % 1296).toString(36).toUpperCase().padStart(2, '0'); }
 const norm = s => String(s).toLowerCase().replace(/[’‘]/g, "'").replace(/[“”]/g, '"').replace(/[-\s]+/g, ' ').replace(/[.!?,;:]+$/g, '').trim();
