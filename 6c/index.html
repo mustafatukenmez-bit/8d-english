@@ -162,6 +162,13 @@ const FACES = {
   S: '<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="14" cy="16" r="2.2" fill="currentColor"/><circle cx="26" cy="16" r="2.2" fill="currentColor"/><path d="M12 29q8-7 16 0" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>'
 };
 const FEELW = { H: 'Great', O: 'OK', S: 'Not sure' };
+const FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSd7j2Xc3dLXCSz4xYfBL-jB3QGOxOP6KyZVSMIs9etrSA-x7A/formResponse', FENTRY = 'entry.319896216', PFX = 'pev6c:';
+function syncResults() {
+  const keys = []; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith(PFX + 'done:')) keys.push(k.slice(PFX.length)); } } catch (e) { return; }
+  const sent = store.get('sent', {});
+  keys.forEach(k => { const d = store.get(k, null); if (!d || !d.rc || sent[d.rc]) return;
+    fetch(FORM, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({ [FENTRY]: d.rc }) }).then(() => { const s2 = store.get('sent', {}); s2[d.rc] = Date.now(); store.set('sent', s2); }).catch(() => {}); });
+}
 const face = FACES.H.replace('<svg', '<svg class="face"');
 function bubble(t) { return `<div class="bubble-row">${face}<div class="bubble">${t}</div></div>`; }
 
@@ -177,6 +184,7 @@ fetch('data.json').then(r => r.json()).then(j => { D = j; route(); }).catch(() =
   app.innerHTML = '<p class="err" style="padding-top:30px">The sheets could not load. Check your internet connection and open the page again.</p>';
 });
 if (location.hash === '#teacher') teacher();
+syncResults(); window.addEventListener('online', syncResults);
 
 function setWho() {
   const g = code && D && D.groups ? D.groupInfo[D.groups[code]] : null;
@@ -201,7 +209,7 @@ function home() {
     <div class="how">
       <div class="sheet"><b>1 · Let's Remember</b><p class="muted" style="margin:4px 0 0">Look at the exam questions you missed and try them again.</p></div>
       <div class="sheet"><b>2 · Now It's Your Turn</b><p class="muted" style="margin:4px 0 0">Do the word activities and press <i>Check</i>.</p></div>
-      <div class="sheet"><b>3 · Send your result</b><p class="muted" style="margin:4px 0 0">At the end you get a result code. Send it to your teacher.</p></div>
+      <div class="sheet"><b>3 · Finish</b><p class="muted" style="margin:4px 0 0">At the end, tap the button. Your result goes to your teacher automatically.</p></div>
     </div>
     <footer><span>6. sınıflar · KUR İngilizce</span><button type="button" onclick="location.hash='teacher'">Öğretmen sayfası</button></footer>`;
   const ci = document.getElementById('ci');
@@ -388,12 +396,12 @@ function sheet(eid) {
     box.innerHTML = `<h3>How do you feel now?</h3>
       <div class="feel">${['H', 'O', 'S'].map(f => `<button type="button" data-f="${f}" aria-pressed="${S.feel === f}">${FACES[f]}<span>${FEELW[f]}</span></button>`).join('')}</div>
       ${openRem + openActs ? `<p class="muted" style="margin:0">Still open: ${openRem ? `${openRem} question${openRem > 1 ? 's' : ''} in ${remTitle}` : ''}${openRem && openActs ? ' and ' : ''}${openActs ? `${openActs} activit${openActs > 1 ? 'ies' : 'y'} to check` : ''}. Finish them for a better score.</p>` : `<p style="margin:0"><b>Everything is done.</b> Well done!</p>`}
-      <div><button class="btn primary" type="button" id="mk" ${S.feel ? '' : 'disabled'}>${done ? 'Update my result code' : 'Get my result code'}</button>
+      <div><button class="btn primary" type="button" id="mk" ${S.feel ? '' : 'disabled'}>${done ? 'Send my new result' : 'Finish and send to my teacher'}</button>
       ${S.feel ? '' : '<span class="muted" style="font-size:.9rem"> Choose a face first.</span>'}</div>
       <div id="rcb">${done ? resultBlock(done) : ''}</div>`;
     box.querySelectorAll('.feel button').forEach(b => b.onclick = () => { S.feel = b.dataset.f; save(); fin(); });
     const mk = document.getElementById('mk');
-    if (mk) mk.onclick = () => { const d = { rc: full, score: sc, total }; store.set(`done:${code}:${eid}`, d); fin(); document.getElementById('rcb').scrollIntoView({ block: 'nearest' }); };
+    if (mk) mk.onclick = () => { const d = { rc: full, score: sc, total }; store.set(`done:${code}:${eid}`, d); syncResults(); fin(); document.getElementById('rcb').scrollIntoView({ block: 'nearest' }); };
     const cp = document.getElementById('cp');
     if (cp) cp.onclick = () => {
       const t = document.getElementById('rct').textContent;
@@ -403,8 +411,8 @@ function sheet(eid) {
     };
   }
   function resultBlock(d) {
-    return `<div class="stack pop" style="gap:10px;margin-top:6px"><p style="margin:0">Your score: <b>${d.score} / ${d.total}</b>. Send this result code to your teacher:</p>
-      <div><span class="rcode" id="rct">${esc(d.rc)}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" type="button" id="cp">Copy code</button><a class="btn small" style="text-decoration:none" href="https://wa.me/?text=${encodeURIComponent(d.rc)}" target="_blank" rel="noopener">Send on WhatsApp</a></div></div>`;
+    return `<div class="stack pop" style="gap:10px;margin-top:6px"><p style="margin:0">Your score: <b>${d.score} / ${d.total}</b>. ✓ Your result is sent to your teacher. Well done!</p><p class="muted" style="margin:0;font-size:.85rem">Result code (only if your teacher asks for it):</p>
+      <div><span class="rcode" id="rct">${esc(d.rc)}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" type="button" id="cp">Copy code</button></div></div>`;
   }
   prog();
 }
