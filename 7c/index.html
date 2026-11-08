@@ -422,43 +422,5 @@ function zoom(src) {
   document.body.appendChild(lb); lb.querySelector('button').focus();
 }
 
-/* ---------- teacher (Turkish) ---------- */
-function teacher() {
-  code = null; setWho(); window.scrollTo(0, 0);
-  const roster = store.get('roster', '');
-  const codes = store.get('rcodes', '');
-  app.innerHTML = `<div class="stack" style="padding-top:22px">
-    <div class="stickerbar"><button class="btn small" type="button" id="tb">← Öğrenci girişi</button></div>
-    <h1>Öğretmen sayfası</h1>
-    <p class="muted" style="margin:0;max-width:62ch">Öğrencilerin gönderdiği sonuç kodlarını yapıştırın; tablo kendiliğinden oluşur. İsimler sayfada saklanmaz: kod listesini bir kez yapıştırırsanız yalnızca bu tarayıcıda hatırlanır.</p>
-    <div class="sheet stack"><label for="rs"><b>Kod listesi</b> <span class="muted">(her satıra: KOD Ad Soyad)</span></label>
-      <textarea id="rs" spellcheck="false" placeholder="ABCDE Ad Soyad">${esc(roster)}</textarea></div>
-    <div class="sheet stack"><label for="rc"><b>Sonuç kodları</b> <span class="muted">(istediğiniz kadar; satır satır ya da mesajdan olduğu gibi)</span></label>
-      <textarea id="rc" spellcheck="false" placeholder="ABCDE-D3-41-52-H-7F">${esc(codes)}</textarea></div>
-    <div class="sheet" id="tt"></div></div>`;
-  document.getElementById('tb').onclick = () => { history.replaceState(null, '', location.pathname); route(); if (!D) home(); };
-  const rs = document.getElementById('rs'), rc = document.getElementById('rc');
-  const draw = () => {
-    store.set('roster', rs.value); store.set('rcodes', rc.value);
-    const names = {}; rs.value.split(/\n/).forEach(l => { const m = l.trim().match(/^([A-Z0-9]{5})\s+(.+)$/i); if (m) names[m[1].toUpperCase()] = m[2].trim(); });
-    const EXN = { D1: 'Deneme 1', D2: 'Deneme 2', D3: 'Deneme 3', D4: 'Deneme 4', D5: 'Deneme 5', T1: 'Tarama 1' };
-    const found = [...rc.value.toUpperCase().matchAll(/\b([A-Z0-9]{5})-(D\d|T\d)-(\d+)-(\d+)-([HOSX])-([A-Z0-9]{2})\b/g)];
-    const best = {};
-    found.forEach(m => {
-      const base = m.slice(1, 6).join('-'); const valid = chk(base) === m[6];
-      const k = m[1] + m[2]; const row = { c: m[1], e: m[2], s: +m[3], t: +m[4], f: m[5], valid };
-      if (!best[k] || (row.valid && row.s >= best[k].s)) best[k] = row;
-    });
-    const rows = Object.values(best).sort((a, b) => a.e.localeCompare(b.e) || (names[a.c] || a.c).localeCompare(names[b.c] || b.c, 'tr'));
-    const fw = { H: 'İyi', O: 'Orta', S: 'Emin değil', X: '—' };
-    document.getElementById('tt').innerHTML = rows.length ? `<div class="tablebox"><table>
-      <tr><th>Sınav</th><th>Öğrenci</th><th>Puan</th><th>%</th><th>His</th><th>Kontrol</th></tr>
-      ${rows.map(r => `<tr><td>${EXN[r.e] || r.e}</td><td>${esc(names[r.c] || r.c)}</td><td style="font-variant-numeric:tabular-nums">${r.s} / ${r.t}</td><td style="font-variant-numeric:tabular-nums">${Math.round(100 * r.s / r.t)}</td><td>${fw[r.f]}</td>
-      <td>${r.valid ? '<span class="badge done">geçerli</span>' : '<span class="badge" style="color:var(--bad);border-color:var(--bad)">kod hatalı</span>'}</td></tr>`).join('')}</table></div>
-      <p class="muted" style="margin:8px 0 0;font-size:.85rem">${rows.length} sonuç. Aynı öğrenci aynı sınavı birden çok gönderdiyse en yüksek geçerli puan gösterilir. "Kod hatalı" yazan satırlar yanlış yazılmış ya da değiştirilmiş olabilir.</p>`
-      : '<p class="muted" style="margin:0">Sonuç kodu yapıştırdığınızda tablo burada görünecek.</p>';
-  };
-  rs.oninput = draw; rc.oninput = draw; draw();
-}
 })();
 </script>
