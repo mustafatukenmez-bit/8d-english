@@ -174,7 +174,6 @@ function bubble(t) { return `<div class="bubble-row">${face}<div class="bubble">
 
 /* ---------- routing ---------- */
 function route() {
-  if (location.hash === '#teacher') return teacher();
   if (!D) return;
   const c = store.get('code', null);
   if (c && D.students[c]) { code = c; list(); } else home();
@@ -183,7 +182,6 @@ window.addEventListener('hashchange', route);
 fetch('data.json').then(r => r.json()).then(j => { D = j; route(); }).catch(() => {
   app.innerHTML = '<p class="err" style="padding-top:30px">The sheets could not load. Check your internet connection and open the page again.</p>';
 });
-if (location.hash === '#teacher') teacher();
 syncResults(); window.addEventListener('online', syncResults);
 
 function setWho() {
@@ -211,7 +209,7 @@ function home() {
       <div class="sheet"><b>2 · Now It's Your Turn</b><p class="muted" style="margin:4px 0 0">Do the word activities and press <i>Check</i>.</p></div>
       <div class="sheet"><b>3 · Finish</b><p class="muted" style="margin:4px 0 0">At the end, tap the button. Your result goes to your teacher automatically.</p></div>
     </div>
-    <footer><span>8. sınıflar · KUR İngilizce</span><button type="button" onclick="location.hash='teacher'">Öğretmen sayfası</button></footer>`;
+    <footer><span>8. sınıflar · KUR İngilizce</span></footer>`;
   const ci = document.getElementById('ci');
   ci.addEventListener('input', () => ci.value = ci.value.toUpperCase().replace(/[^A-Z0-9]/g, ''));
   document.getElementById('cf').addEventListener('submit', e => {
