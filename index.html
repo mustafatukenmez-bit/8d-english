@@ -166,7 +166,7 @@ const FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSd7j2Xc3dLXCSz4xYfBL-jB3Q
 function syncResults() {
   const keys = []; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith(PFX + 'done:')) keys.push(k.slice(PFX.length)); } } catch (e) { return; }
   const sent = store.get('sent', {});
-  keys.forEach(k => { const d = store.get(k, null); if (!d || !d.rc || sent[d.rc]) return;
+  keys.forEach(k => { const d = store.get(k, null); if (!d || !d.rc || sent[d.rc] || k.split(':')[1].startsWith('DEMO')) return;
     fetch(FORM, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({ [FENTRY]: d.rc }) }).then(() => { const s2 = store.get('sent', {}); s2[d.rc] = Date.now(); store.set('sent', s2); }).catch(() => {}); });
 }
 const face = FACES.H.replace('<svg', '<svg class="face"');
@@ -409,7 +409,7 @@ function sheet(eid) {
     };
   }
   function resultBlock(d) {
-    return `<div class="stack pop" style="gap:10px;margin-top:6px"><p style="margin:0">Your score: <b>${d.score} / ${d.total}</b>. ✓ Your result is sent to your teacher. Well done!</p><p class="muted" style="margin:0;font-size:.85rem">Result code (only if your teacher asks for it):</p>
+    return `<div class="stack pop" style="gap:10px;margin-top:6px"><p style="margin:0">Your score: <b>${d.score} / ${d.total}</b>. ${code.startsWith('DEMO') ? 'Demo code: this result is not sent to any teacher.' : '✓ Your result is sent to your teacher. Well done!'}</p><p class="muted" style="margin:0;font-size:.85rem">Result code (only if your teacher asks for it):</p>
       <div><span class="rcode" id="rct">${esc(d.rc)}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" type="button" id="cp">Copy code</button></div></div>`;
   }
   prog();
