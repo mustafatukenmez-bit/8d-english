@@ -1,0 +1,245 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style><title>PEV Öğretmen Sayfası</title><meta name="robots" content="noindex">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Lexend:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow workbook column; each step is a sheet section on faint graph paper, stickers for state. */
+:root {
+  --paper: #f5f8fb; --sheet: #ffffff; --ink: #1d2a44; --muted: #5b6782; --line: #c9d3e2; --soft: #e8eef6;
+  --accent: #0d7a63; --accent-ink: #ffffff; --mark: #ffe27a; --good: #1c8a4a; --bad: #c2412d; --good-bg: #e3f4ea; --bad-bg: #fbe6e1;
+  --grid: rgba(29, 42, 68, .045);
+  --display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Lexend", "Segoe UI", system-ui, sans-serif;
+  --r: 14px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #121826; --sheet: #1a2233; --ink: #e8edf6; --muted: #a3afc4; --line: #34405a; --soft: #26304a;
+  --accent: #3cc49f; --accent-ink: #0b1a14; --mark: #6b5a12; --good: #57d18b; --bad: #ff8a73; --good-bg: #183528; --bad-bg: #3d211c;
+  --grid: rgba(232, 237, 246, .04); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #121826; --sheet: #1a2233; --ink: #e8edf6; --muted: #a3afc4; --line: #34405a; --soft: #26304a;
+  --accent: #3cc49f; --accent-ink: #0b1a14; --mark: #6b5a12; --good: #57d18b; --bad: #ff8a73; --good-bg: #183528; --bad-bg: #3d211c;
+  --grid: rgba(232, 237, 246, .04); color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 24px 24px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--sheet) }
+.wrap { max-width: 820px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--sheet); border-bottom: 1px solid var(--line) }
+header.top .wrap { display: flex; align-items: center; gap: 12px; padding-block: 10px; }
+header.top img { width: 34px; height: 34px; object-fit: contain }
+header.top .brand { font-family: var(--display); font-weight: 800; font-size: 1.2rem; line-height: 1.1 }
+header.top .brand small { display: block; font-family: var(--body); font-weight: 400; font-size: .72rem; color: var(--muted) }
+header.top .sp { flex: 1 }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0 }
+h1 { font-size: 2rem; font-weight: 800 } h2 { font-size: 1.45rem; font-weight: 800 } h3 { font-size: 1.12rem; font-weight: 700 }
+.muted { color: var(--muted) }
+button, input, select { font: inherit; color: inherit }
+button { cursor: pointer }
+.btn { border: 2px solid var(--ink); background: var(--sheet); border-radius: 999px; padding: 8px 18px; font-weight: 600; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink) }
+.btn.small { padding: 4px 12px; font-size: .85rem }
+.btn:focus-visible, .opt:focus-visible, input:focus-visible, select:focus-visible, .tile:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px }
+.btn[disabled] { opacity: .5; cursor: default }
+.stack { display: flex; flex-direction: column; gap: 18px }
+.sheet { background: var(--sheet); border: 1.5px solid var(--line); border-radius: var(--r); padding: 18px; min-width: 0 }
+.sec-head { display: flex; align-items: center; gap: 10px; margin-top: 18px }
+.pill { display: inline-block; background: var(--mark); color: var(--ink); border-radius: 999px; padding: 2px 14px; font-family: var(--display); font-weight: 800; font-size: 1.25rem }
+.bubble-row { display: flex; gap: 12px; align-items: flex-start }
+.face { flex: none; width: 44px; height: 44px }
+.bubble { position: relative; background: var(--sheet); border: 2px solid var(--ink); border-radius: 18px; padding: 10px 14px; min-width: 0 }
+.bubble::before { content: ""; position: absolute; left: -9px; top: 14px; width: 14px; height: 14px; background: var(--sheet); border-left: 2px solid var(--ink); border-bottom: 2px solid var(--ink); transform: rotate(45deg) }
+/* home */
+.hero { padding-block: 40px 8px; display: grid; gap: 18px }
+.code-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+.code-input { font-family: var(--display); font-weight: 800; font-size: 1.8rem; letter-spacing: .3em; text-transform: uppercase; width: 9.5em; max-width: 100%; padding: 6px 14px; border: 2px solid var(--ink); border-radius: 12px; background: var(--sheet) }
+.err { color: var(--bad); font-weight: 500 }
+.how { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px }
+.how .sheet { padding: 14px }
+.how b { font-family: var(--display); font-size: 1.05rem }
+/* list */
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px }
+.tile { text-align: left; background: var(--sheet); border: 2px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 6px; }
+.tile:hover { border-color: var(--ink) }
+.tile .nm { font-family: var(--display); font-weight: 800; font-size: 1.3rem }
+.badge { display: inline-block; font-size: .78rem; font-weight: 600; border-radius: 999px; padding: 1px 10px; border: 1.5px solid var(--ink) }
+.badge.lu { background: var(--mark) }
+.badge.done { background: var(--good-bg); border-color: var(--good); color: var(--good) }
+/* cards */
+.card { display: grid; gap: 10px }
+.card .hd { display: flex; flex-wrap: wrap; align-items: center; gap: 8px }
+.card .hd .sp { flex: 1 }
+.qn { font-family: var(--display); font-weight: 800; background: var(--ink); color: var(--sheet); border-radius: 999px; padding: 0 10px; font-size: .95rem }
+.qimg { display: block; max-width: min(100%, 720px); height: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: zoom-in }
+.chips { display: flex; flex-wrap: wrap; gap: 8px }
+.opt { min-width: 48px; border: 2px solid var(--ink); background: var(--sheet); border-radius: 12px; padding: 6px 14px; font-weight: 600 }
+.opt[aria-pressed="true"] { background: var(--ink); color: var(--sheet) }
+.opt.right { background: var(--good-bg); border-color: var(--good); color: var(--good) }
+.opt.wrong { background: var(--bad-bg); border-color: var(--bad); color: var(--bad) }
+.fb { border-radius: 10px; padding: 10px 12px; display: grid; gap: 6px }
+.fb.ok { background: var(--good-bg) } .fb.no { background: var(--bad-bg) }
+.fb .v { font-weight: 600 }
+.tip { background: var(--soft); border-radius: 10px; padding: 8px 12px; font-size: .92rem }
+.why { display: grid; gap: 2px; background: var(--sheet); border-radius: 8px; padding: 8px 10px; }
+.why .wl { font-weight: 600; font-size: .9rem; color: var(--muted) }
+.skip { background: none; border: none; color: var(--muted); text-decoration: underline; font-size: .88rem; padding: 4px 6px; align-self: center }
+.learns { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px }
+.learn { border: 1.5px dashed var(--line); border-radius: 12px; padding: 10px 12px; font-size: .93rem }
+.learn h3 { font-size: 1rem; margin-bottom: 4px }
+.words { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 4px 16px; font-size: .95rem }
+.tablebox { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; font-size: .93rem }
+th, td { border: 1px solid var(--line); padding: 5px 8px; text-align: left; vertical-align: top }
+th { background: var(--soft) }
+/* activities */
+.act { display: grid; gap: 10px }
+.act .ah { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px }
+.act .num { font-family: var(--display); font-weight: 800; width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--ink); display: inline-grid; place-items: center; flex: none }
+.act .ins { color: var(--muted); font-size: .9rem; font-style: italic }
+.ab { min-width: 0; overflow-wrap: anywhere }
+.ab .row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding-block: 5px; border-bottom: 1px dotted var(--line) }
+.ab .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 22px }
+.ab .cols2 > * { min-width: 0 }
+.ab ol.l { margin: 0; padding-left: 1.4em; display: grid; gap: 8px }
+.ab ol.cols2 { grid-template-columns: 1fr 1fr; column-gap: 28px }
+.ab .wb { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px }
+.ab .wb span { border: 1.5px solid var(--ink); border-radius: 999px; padding: 1px 10px; font-weight: 500; font-size: .92rem }
+.ab .tr { color: var(--muted); font-style: italic; font-size: .9rem }
+.ab .hint { color: var(--muted); font-size: .85rem }
+.ab table.t { margin-top: 4px }
+.ab [style*="border"] { border-color: var(--line) !important; }
+.ab .q { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-left: auto }
+.ab .q .opt { padding: 3px 10px; font-size: .88rem; min-width: 0; border-radius: 999px }
+.ab .q input[type=text], .ab .q select { border: none; border-bottom: 2px solid var(--ink); background: var(--soft); border-radius: 6px 6px 0 0; padding: 3px 8px; min-width: 7.5em; max-width: 100% }
+.ab .q.right input, .ab .q.right select { border-color: var(--good); background: var(--good-bg) }
+.ab .q.wrong input, .ab .q.wrong select { border-color: var(--bad); background: var(--bad-bg) }
+.ab .q .fix { color: var(--good); font-weight: 600; font-size: .88rem }
+.ab li .q, .ab .row .q.inl { margin-left: 0 }
+.score-chip { font-weight: 600; border-radius: 999px; padding: 2px 12px; background: var(--good-bg); color: var(--good) }
+@media (max-width: 560px) { .ab .cols2, .ab ol.cols2 { grid-template-columns: 1fr } h1 { font-size: 1.6rem } }
+/* finish */
+.feel { display: flex; gap: 14px; flex-wrap: wrap }
+.feel button { border: 2px solid var(--line); background: var(--sheet); border-radius: 16px; padding: 8px 14px; display: grid; justify-items: center; gap: 2px; font-size: .85rem }
+.feel button[aria-pressed="true"] { border-color: var(--ink); background: var(--mark) }
+.feel svg { width: 44px; height: 44px }
+.rcode { font-family: var(--display); font-weight: 800; font-size: clamp(1.4rem, 6vw, 2.1rem); letter-spacing: .06em; background: var(--mark); border-radius: 12px; padding: 6px 14px; display: inline-block; user-select: all; overflow-wrap: anywhere }
+.stickerbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: .9rem }
+.prog { height: 8px; background: var(--soft); border-radius: 99px; overflow: hidden; flex: 1; min-width: 120px }
+.prog i { display: block; height: 100%; background: var(--accent); width: 0 }
+.lightbox { position: fixed; inset: 0; background: rgba(10, 15, 25, .86); z-index: 20; overflow: auto; padding: max(16px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 16px max(12px, env(safe-area-inset-left, 0px)); }
+.lightbox img { width: 100%; max-width: 1000px; display: block; margin: 0 auto; background: #fff; border-radius: 8px }
+.lightbox button { position: sticky; top: 0; float: right; margin-bottom: 8px }
+textarea { width: 100%; min-height: 120px; font: inherit; border: 1.5px solid var(--line); border-radius: 10px; padding: 8px; background: var(--sheet); color: var(--ink) }
+footer { margin-top: 30px; font-size: .85rem; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap }
+footer button { background: none; border: none; text-decoration: underline; color: var(--muted); padding: 0 }
+@media (prefers-reduced-motion: no-preference) { .pop { animation: pop .25s ease-out } @keyframes pop { from { transform: scale(.96); opacity: .4 } to { transform: none; opacity: 1 } } }
+</style>
+<style>
+.wrap.wide { max-width: 1100px }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px }
+.tabs button { border: 2px solid var(--line); background: var(--sheet); border-radius: 999px; padding: 6px 16px; font-weight: 600 }
+.tabs button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--sheet) }
+.grid { width: 100%; border-collapse: collapse; font-size: .92rem }
+.grid th, .grid td { border-bottom: 1px solid var(--line); padding: 7px 8px; text-align: left; white-space: nowrap }
+.grid th { font-weight: 600; color: var(--muted); font-size: .82rem; position: sticky; top: 0; background: var(--sheet) }
+.grid td.sc { font-variant-numeric: tabular-nums; text-align: center }
+.grid th.sc { text-align: center }
+.grid tr.sum td { font-weight: 600; background: var(--soft) }
+.cell { display: inline-block; min-width: 54px; border-radius: 8px; padding: 2px 6px }
+.cell.hi { background: var(--good-bg); color: var(--good) }
+.cell.mid { background: var(--soft) }
+.cell.lo { background: var(--bad-bg); color: var(--bad) }
+.cell.none { color: var(--muted) }
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch }
+textarea { width: 100%; box-sizing: border-box; min-height: 110px; border: 1.5px solid var(--line); border-radius: 10px; padding: 10px; font: inherit; font-size: .9rem; background: var(--paper); color: var(--ink) }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: .82rem; color: var(--muted) }
+</style>
+</head><body><header class="top"><div class="wrap wide">
+  <img src="../logo.png" alt="Özel PEV Okulları">
+  <div class="brand"><span>English Practice</span><small id="bs">Öğretmen sayfası</small></div>
+  <div class="sp"></div>
+</div></header>
+<main class="wrap wide" id="app"><p class="muted" style="padding-top:30px">Yükleniyor…</p></main>
+<script>
+(() => {
+const app = document.getElementById('app');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('pevt:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('pevt:' + k, JSON.stringify(v)); } catch (e) {} }
+};
+function chk(s, salt) { let x = 2166136261; for (const ch of s + salt) { x ^= ch.charCodeAt(0); x = Math.imul(x, 16777619) >>> 0; } return (x % 1296).toString(36).toUpperCase().padStart(2, '0'); }
+const b64 = s => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((s.length + 3) % 4)), c => c.charCodeAt(0));
+const fail = msg => { app.innerHTML = `<div class="sheet" style="margin-top:30px"><h2>Sayfa açılamadı</h2><p class="muted">${msg}</p></div>`; };
+
+(async () => {
+  const h = new URLSearchParams(location.hash.slice(1)); const tid = h.get('t'), key = h.get('k');
+  if (!tid || !key) return fail('Bu sayfa her öğretmene özel bir linkle açılır. Size gönderilen linki tam olarak kopyalayıp açın.');
+  let R; try { R = await fetch('rosters.json?x=' + Date.now(), { cache: 'no-store' }).then(r => r.json()); } catch (e) { return fail('Bağlantı sorunu. Sayfayı yenileyin.'); }
+  const ent = R.teachers[tid]; if (!ent) return fail('Bu link artık geçerli değil. Yeni linki isteyin.');
+  let T;
+  try {
+    const k = await crypto.subtle.importKey('raw', b64(key), 'AES-GCM', false, ['decrypt']);
+    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(ent.iv) }, k, b64(ent.ct));
+    T = JSON.parse(new TextDecoder().decode(pt));
+  } catch (e) { return fail('Link eksik ya da hatalı kopyalanmış. Size gönderilen linkin tamamını açın.'); }
+  render(T, R.sites, tid);
+})();
+
+function render(T, SITES, tid) {
+  document.getElementById('bs').textContent = 'Öğretmen sayfası · ' + T.teacher;
+  document.title = 'Öğretmen · ' + T.teacher;
+  const byCode = {}; T.classes.forEach(c => c.students.forEach(([code, name]) => byCode[code] = { name, cls: c }));
+  let cur = store.get(tid + ':cls', T.classes[0].g); if (!T.classes.find(c => c.g === cur)) cur = T.classes[0].g;
+  app.innerHTML = `<div class="stack" style="padding-top:22px">
+    <div><h1>${esc(T.teacher)}</h1><p class="muted" style="margin:4px 0 0;max-width:70ch">Öğrencilerin size gönderdiği sonuç kodlarını aşağıdaki kutuya yapıştırın. Mesajları olduğu gibi yapıştırabilirsiniz; kodlar kendiliğinden bulunur, doğru öğrencinin satırına yazılır. Yapıştırdıklarınız bu tarayıcıda saklanır.</p></div>
+    <div class="sheet stack" style="gap:8px"><label for="rc"><b>Sonuç kodları</b> <span class="muted">(örnek: ABCDE-D1-12-15-H-7F)</span></label>
+      <textarea id="rc" spellcheck="false" placeholder="Öğrencilerden gelen mesajları buraya yapıştırın"></textarea>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span class="muted" id="cnt" style="font-size:.88rem"></span><span style="flex:1"></span>
+      <button class="btn small" type="button" id="csv">Excel'e aktar (CSV)</button></div></div>
+    <div class="tabs" id="tabs">${T.classes.map(c => `<button type="button" data-g="${c.g}" aria-pressed="${c.g === cur}">${esc(c.g)}</button>`).join('')}</div>
+    <div class="sheet" id="tt"></div>
+    <div id="bad"></div></div>`;
+  const rc = document.getElementById('rc'); rc.value = store.get(tid + ':codes', '');
+  let best = {};
+  const parse = () => {
+    best = {}; const bad = [];
+    for (const m of rc.value.toUpperCase().matchAll(/\b([A-Z0-9]{5})-([DT]\d+)-(\d+)-(\d+)-([HOSX])-([A-Z0-9]{2})\b/g)) {
+      const st = byCode[m[1]];
+      if (!st) { bad.push([m[0], 'sizin sınıflarınızda bu kod yok']); continue; }
+      const valid = chk(m.slice(1, 6).join('-'), SITES[st.cls.site].salt) === m[6];
+      if (!valid) { bad.push([m[0], 'kod hatalı yazılmış ya da değiştirilmiş']); continue; }
+      const k = m[1] + ':' + m[2].toLowerCase(); const row = { s: +m[3], t: +m[4], f: m[5] };
+      if (!best[k] || row.s > best[k].s) best[k] = row;
+    }
+    document.getElementById('cnt').textContent = Object.keys(best).length + ' geçerli sonuç';
+    document.getElementById('bad').innerHTML = bad.length ? `<div class="sheet"><b>Tabloya yazılamayan kodlar</b><ul style="margin:6px 0 0;padding-left:20px">${bad.map(([c, w]) => `<li><code>${esc(c)}</code> <span class="muted">${w}</span></li>`).join('')}</ul></div>` : '';
+  };
+  const cell = r => { if (!r) return '<span class="cell none">—</span>'; const p = r.s / r.t; return `<span class="cell ${p >= .8 ? 'hi' : p >= .5 ? 'mid' : 'lo'}" title="${Math.round(100 * p)}%">${r.s}/${r.t}</span>`; };
+  const FEEL = { H: '🙂', O: '😐', S: '😟', X: '' };
+  const draw = () => {
+    const c = T.classes.find(x => x.g === cur); const ex = SITES[c.site].exams;
+    const rows = c.students.map(([code, name]) => ({ code, name, r: ex.map(([id]) => best[code + ':' + id]) }));
+    const sums = ex.map((_, i) => { const v = rows.map(x => x.r[i]).filter(Boolean); return { n: v.length, avg: v.length ? Math.round(100 * v.reduce((a, r) => a + r.s / r.t, 0) / v.length) : null }; });
+    document.getElementById('tt').innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:10px"><h2>${esc(c.label)}</h2><span class="muted">${c.students.length} öğrenci</span></div>
+      <div class="scroll"><table class="grid"><thead><tr><th>Öğrenci</th><th>Kod</th>${ex.map(([, n]) => `<th class="sc">${esc(n)}</th>`).join('')}<th class="sc">Biten</th></tr></thead><tbody>
+      ${rows.map(x => `<tr><td>${esc(x.name)}</td><td class="muted" style="font-size:.82rem">${x.code}</td>${x.r.map(r => `<td class="sc">${cell(r)} ${r ? FEEL[r.f] : ''}</td>`).join('')}<td class="sc">${x.r.filter(Boolean).length}/${ex.length}</td></tr>`).join('')}
+      <tr class="sum"><td>Gönderen / ortalama</td><td></td>${sums.map(s => `<td class="sc">${s.n}/${rows.length}${s.avg != null ? ' · %' + s.avg : ''}</td>`).join('')}<td></td></tr>
+      </tbody></table></div>
+      <div class="legend" style="margin-top:10px"><span><span class="cell hi">%80+</span></span><span><span class="cell mid">%50–79</span></span><span><span class="cell lo">%50 altı</span></span><span>— henüz göndermedi</span><span>🙂 😐 😟 öğrencinin bitirince seçtiği his</span></div>`;
+  };
+  const all = () => { store.set(tid + ':codes', rc.value); parse(); draw(); };
+  rc.oninput = all;
+  document.getElementById('tabs').onclick = e => { const b = e.target.closest('button'); if (!b) return; cur = b.dataset.g; store.set(tid + ':cls', cur); document.querySelectorAll('#tabs button').forEach(x => x.setAttribute('aria-pressed', x.dataset.g === cur)); draw(); };
+  document.getElementById('csv').onclick = () => {
+    const c = T.classes.find(x => x.g === cur); const ex = SITES[c.site].exams;
+    const lines = [['Öğrenci', 'Kod', ...ex.map(e => e[1])].join(';'), ...c.students.map(([code, name]) => [name, code, ...ex.map(([id]) => { const r = best[code + ':' + id]; return r ? `${r.s}/${r.t}` : ''; })].join(';'))];
+    const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${c.g}_sonuclar.csv`; document.body.appendChild(a); a.click(); a.remove();
+  };
+  all();
+}
+})();
+</script>
+</body></html>

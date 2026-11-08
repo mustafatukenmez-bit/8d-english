@@ -404,7 +404,7 @@ function sheet(eid) {
   }
   function resultBlock(d) {
     return `<div class="stack pop" style="gap:10px;margin-top:6px"><p style="margin:0">Your score: <b>${d.score} / ${d.total}</b>. Send this result code to your teacher:</p>
-      <div><span class="rcode" id="rct">${esc(d.rc)}</span></div><div><button class="btn small" type="button" id="cp">Copy code</button></div></div>`;
+      <div><span class="rcode" id="rct">${esc(d.rc)}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" type="button" id="cp">Copy code</button><a class="btn small" style="text-decoration:none" href="https://wa.me/?text=${encodeURIComponent(d.rc)}" target="_blank" rel="noopener">Send on WhatsApp</a></div></div>`;
   }
   prog();
 }
