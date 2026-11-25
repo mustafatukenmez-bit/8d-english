@@ -143,13 +143,17 @@ footer button { background: none; border: none; text-decoration: underline; colo
   <span id="who"></span>
 </div></header>
 <main class="wrap" id="app"><p class="muted" style="padding-top:30px">Loading your sheets…</p></main>
+<script>
+setTimeout(function(){var a=document.getElementById('app');if(a&&/Loading your sheets/.test(a.innerHTML)){a.innerHTML='<p class="err" style="padding-top:30px">The page could not open in this app. Please open the link in <b>Google Chrome</b>.<br><br>Sayfa bu uygulamada açılmadı. Bağlantıyı <b>Google Chrome</b> ile açın:<br><br><b>'+location.href.split('#')[0]+'</b></p>';}},20000);
+</script>
+
 
 <script>
 (function () {
 const SALT = 'pev5d-2026';
 const app = document.getElementById('app'), who = document.getElementById('who');
 let D = null, code = null;
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const store = {
   get(k, d) { try { const v = localStorage.getItem('pev5d:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem('pev5d:' + k, JSON.stringify(v)); } catch (e) {} }
@@ -176,10 +180,11 @@ function bubble(t) { return `<div class="bubble-row">${face}<div class="bubble">
 function route() {
   if (!D) return;
   const c = store.get('code', null);
-  if (c && D.students[c]) { code = c; list(); } else home();
+  if (c && D.groups[c]) loadSt(c, ok => { if (ok) { code = c; list(); } else home(); }); else home();
 }
 window.addEventListener('hashchange', route);
-fetch('data.json').then(r => r.json()).then(j => { D = j; route(); }).catch(() => {
+function loadSt(c, cb) { if (D.students[c]) return cb(true); fetch('s/' + c + '.json').then(r => r.ok ? r.json() : null).then(j => { if (j) D.students[c] = j; cb(!!j); }).catch(() => cb(false)); }
+fetch('meta.json').then(r => r.json()).then(j => { D = j; D.students = {}; route(); }).catch(() => {
   app.innerHTML = '<p class="err" style="padding-top:30px">The sheets could not load. Check your internet connection and open the page again.</p>';
 });
 syncResults(); window.addEventListener('online', syncResults);
@@ -216,8 +221,8 @@ function home() {
     e.preventDefault();
     const c = ci.value.trim().toUpperCase();
     if (!D) return;
-    if (!D.students[c]) { document.getElementById('ce').textContent = 'This code is not correct. Check the letters and try again.'; return; }
-    code = c; store.set('code', c); list();
+    if (!D.groups[c]) { document.getElementById('ce').textContent = 'This code is not correct. Check the letters and try again.'; return; }
+    loadSt(c, ok => { if (!ok) { document.getElementById('ce').textContent = 'Connection problem. Check your internet and try again.'; return; } code = c; store.set('code', c); list(); });
   });
 }
 
@@ -332,7 +337,7 @@ function sheet(eid) {
     const st = S.acts[i] || (S.acts[i] = { v: {}, checked: false });
     el.querySelectorAll('.q').forEach(qe => {
       const k = qe.dataset.i, it = a.items[k];
-      if (qe.closest('li') || qe.closest('.row')?.textContent.trim().length > 60) qe.classList.add('inl');
+      if (qe.closest('li') || (qe.closest('.row') && qe.closest('.row').textContent.trim().length > 60)) qe.classList.add('inl');
       if (it.kind === 'choice') {
         qe.innerHTML = it.options.map((o, j) => `<button class="opt" type="button" data-j="${j}" aria-pressed="${st.v[k] == j}">${esc(o)}</button>`).join('');
         qe.querySelectorAll('.opt').forEach(b => b.onclick = () => { if (st.checked) return; st.v[k] = +b.dataset.j; save(); qe.querySelectorAll('.opt').forEach(x => x.setAttribute('aria-pressed', x === b)); prog(); });
